@@ -32,4 +32,10 @@ while wb_robot_step(timestep) ~= -1
   wb_console_print(sprintf('Hello World from MATLAB! [%f %f %f]\n', pos(1), pos(2), pos(3)), WB_STDOUT);
   wb_motor_set_velocity(motor_left, 5.0);
   wb_motor_set_velocity(motor_right, 5.0);
+  if pos(1) > 4.5
+    break
+  end
 end
+
+wb_console_print(sprintf('Bye from MATLAB!\n'), WB_STDOUT);
+quit;
