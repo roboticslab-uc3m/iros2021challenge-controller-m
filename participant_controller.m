@@ -1,6 +1,17 @@
 % Initialize the robot
 timestep = wb_robot_get_basic_time_step();
 
+% Obtain waypoints
+waypoints_string = wb_robot_get_custom_data();
+waypoints_flat = str2num(waypoints_string);
+waypoints_transposed = reshape(waypoints_flat,[2,10]);
+waypoints = transpose(waypoints_transposed);
+wb_console_print(sprintf('Waypoints: \n'), WB_STDOUT);
+for i = 1:10
+  wb_console_print(sprintf('[%f %f] ', waypoints(i,1), waypoints(i,2)), WB_STDOUT);
+end
+wb_console_print(sprintf('\n'), WB_STDOUT);
+
 % Initialize devices
 motor_left = wb_robot_get_device('wheel_left_joint');
 motor_right = wb_robot_get_device('wheel_right_joint');
