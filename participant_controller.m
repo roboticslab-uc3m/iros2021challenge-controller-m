@@ -16,6 +16,7 @@ wb_console_print(sprintf('\n'), WB_STDOUT);
 motor_left = wb_robot_get_device('wheel_left_joint');
 motor_right = wb_robot_get_device('wheel_right_joint');
 gps = wb_robot_get_device('gps');
+imu = wb_robot_get_device('inertial unit');
 
 wb_motor_set_velocity(motor_left, 0.0);
 wb_motor_set_velocity(motor_right, 0.0);
@@ -24,12 +25,14 @@ wb_motor_set_position(motor_left, inf);
 wb_motor_set_position(motor_right, inf);
 
 wb_gps_enable(gps, timestep);
+wb_inertial_unit_enable(imu, timestep);
 
 % Main loop:
 % - perform simulation steps until Webots is stopping the controller
 while wb_robot_step(timestep) ~= -1
   pos = wb_gps_get_values(gps);
-  wb_console_print(sprintf('Hello World from MATLAB! [%f %f %f]\n', pos(1), pos(2), pos(3)), WB_STDOUT);
+  imu_rads = wb_inertial_unit_get_roll_pitch_yaw(imu);
+  wb_console_print(sprintf('Hello World from MATLAB! [%f %f %f] [%f %f %f]\n', pos(1), pos(2), pos(3), imu_rads(1)*180.0/3.14159, imu_rads(2)*180.0/3.14159, imu_rads(3)*180.0/3.14159), WB_STDOUT);
   wb_motor_set_velocity(motor_left, 5.0);
   wb_motor_set_velocity(motor_right, 5.0);
   if pos(1) > -1.5
